@@ -18,10 +18,9 @@ import static java.lang.Thread.sleep;
 
 public class QueryableMain {
     public static void main(String[] args) throws Exception {
-        JobID jobId = JobID.fromHexString("110aadcc28135db5bf607a42b05e20c0");
+        JobID jobId = JobID.fromHexString("f4c09f9ab198fbabf9a40991c1c35c08");
         Integer key = 1;
-        QueryableStateClient client = new QueryableStateClient("localhost", 6123);
-
+        QueryableStateClient client = new QueryableStateClient("127.0.0.1", 9069);
         // the state descriptor of the state to be fetched.
         ValueStateDescriptor<Tuple2<Integer, Integer>> descriptor =
                 new ValueStateDescriptor<>(
@@ -34,13 +33,9 @@ public class QueryableMain {
         System.out.println("get kv state return future, waiting......");
         System.out.println("query resultFuture:" + resultFuture.toString());
         System.out.println("query resultFuture 4:" + JSON.toJSONString(resultFuture));
-
-        // now handle the returned value
-
-        sleep(10000);
         System.out.println("query resultFuture 2:" + resultFuture.toString());
         System.out.println("query resultFuture 3:" + JSON.toJSONString(resultFuture));
-
+        // now handle the returned value
         resultFuture.thenAccept(response -> {
             try {
                 System.out.println("test one" );
@@ -51,8 +46,9 @@ public class QueryableMain {
             }
         });
 
-       /* ValueState<Tuple2<Integer, Integer>> res = resultFuture.join();
+        //Thread.sleep(1000);
+        ValueState<Tuple2<Integer, Integer>> res = resultFuture.join();
         System.out.println("query result:" + res.value());
-        client.shutdownAndWait();*/
+        client.shutdownAndWait();
     }
 }
